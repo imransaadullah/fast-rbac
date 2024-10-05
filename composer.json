@@ -1,0 +1,14 @@
+{
+    "name": "imransaadullah/fast-rbac",
+    "description": "A Role-Based Access Control (RBAC) system for PHP applications.",
+    "require": {
+        "php": ">=7.4",
+        "predis/predis": "^1.1",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RBAC\\": "src/"
+        }
+    }
+}

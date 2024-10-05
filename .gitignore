@@ -1,0 +1,5 @@
+vendor
+index.*
+setup.*
+composer.lock
+tests
