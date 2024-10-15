@@ -16,19 +16,40 @@ class Permission {
         $this->slug = $slug;
     }
 
-    // Retrieve all permissions from the database
-    public static function all(PDO $db) {
-        $table = Config::get('database.tables.permissions', 'permissions');
-        $stmt = $db->query("SELECT * FROM {$table}");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
-    }
-
     // Find a permission by its slug
     public static function findBySlug(PDO $db, $slug) {
         $table = Config::get('database.tables.permissions', 'permissions');
         $stmt = $db->prepare("SELECT * FROM {$table} WHERE slug = :slug");
         $stmt->execute(['slug' => $slug]);
-        return $stmt->fetchObject(self::class);
+
+        // Fetch the permission data as an associative array
+        $permissionData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // If permission is found, manually instantiate the Permission class
+        if ($permissionData) {
+            return new self($permissionData['id'], $permissionData['name'], $permissionData['slug']);
+        }
+
+        return null; // Return null if no permission is found
+    }
+
+    // Retrieve all permissions from the database
+    public static function all(PDO $db) {
+        $table = Config::get('database.tables.permissions', 'permissions');
+        $stmt = $db->query("SELECT * FROM {$table}");
+
+        // Fetch all permissions as an associative array
+        $permissionsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Create an array to hold Permission objects
+        $permissions = [];
+
+        // Manually instantiate Permission objects for each row
+        foreach ($permissionsData as $permissionData) {
+            $permissions[] = new self($permissionData['id'], $permissionData['name'], $permissionData['slug']);
+        }
+
+        return $permissions;
     }
 
     // Getter methods

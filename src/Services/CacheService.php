@@ -19,7 +19,7 @@ class CacheService {
         if ($this->store === 'redis') {
             $this->redis = new Client([
                 'scheme' => 'tcp',
-                'host' => '127.0.0.1',
+                'host' => '172.27.248.209',
                 'port' => 6379,
             ]);
         }

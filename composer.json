@@ -1,14 +1,28 @@
 {
     "name": "imransaadullah/fast-rbac",
-    "description": "A Role-Based Access Control (RBAC) system for PHP applications.",
+    "description": "A Role-Based Access Control (RBAC) system for PHP applications with support for caching and automatic migrations.",
+    "type": "library",
+    "keywords": ["rbac", "role-based access control", "permissions", "roles", "php"],
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Imran Saadullah Olawale",
+        "email": "imransaadullah@gmail.com"
+      }
+    ],
     "require": {
-        "php": ">=7.4",
-        "predis/predis": "^1.1",
-        "phpunit/phpunit": "^9.0"
+      "php": ">=7.4",
+      "predis/predis": "^1.1", 
+      "phpunit/phpunit": "^9.0"  
     },
     "autoload": {
-        "psr-4": {
-            "RBAC\\": "src/"
-        }
-    }
-}
+      "psr-4": {
+        "RBAC\\": "src/"
+      }
+    },
+    "scripts": {
+      "test": "phpunit"
+    },
+    "minimum-stability": "stable"
+  }
+  

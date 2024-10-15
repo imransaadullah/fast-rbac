@@ -1,6 +1,6 @@
 <?php
 
-namespace RBAC\Setup;
+namespace RBAC\Database;
 
 use PDO;
 use Exception;

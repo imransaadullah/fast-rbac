@@ -17,19 +17,52 @@ class Role {
     }
 
     // Retrieve all roles from the database
+    // public static function all(PDO $db) {
+    //     $table = Config::get('database.tables.roles', 'roles');
+    //     $stmt = $db->query("SELECT * FROM {$table}");
+    //     return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
+    // }
     public static function all(PDO $db) {
         $table = Config::get('database.tables.roles', 'roles');
         $stmt = $db->query("SELECT * FROM {$table}");
-        return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
+        
+        // Fetch all roles as an array of associative arrays
+        $rolesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Manually instantiate Role objects for each record
+        $roles = [];
+        foreach ($rolesData as $roleData) {
+            $roles[] = new self($roleData['id'], $roleData['name'], $roleData['slug']);
+        }
+        
+        return $roles;
     }
+    
 
     // Find a role by its slug
+    // public static function findBySlug(PDO $db, $slug) {
+    //     $table = Config::get('database.tables.roles', 'roles');
+    //     $stmt = $db->prepare("SELECT * FROM {$table} WHERE slug = :slug");
+    //     $stmt->execute(['slug' => $slug]);
+    //     return $stmt->fetchObject(self::class);
+    // }
+
     public static function findBySlug(PDO $db, $slug) {
         $table = Config::get('database.tables.roles', 'roles');
         $stmt = $db->prepare("SELECT * FROM {$table} WHERE slug = :slug");
         $stmt->execute(['slug' => $slug]);
-        return $stmt->fetchObject(self::class);
+        
+        // Fetch role data as an associative array
+        $roleData = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Check if data was found and instantiate the Role class manually
+        if ($roleData) {
+            return new self($roleData['id'], $roleData['name'], $roleData['slug']);
+        }
+    
+        return null;  // Return null if no role is found
     }
+    
 
     // Attach a permission to this role
     public function attachPermission(PDO $db, Permission $permission) {

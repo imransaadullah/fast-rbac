@@ -1,17 +1,28 @@
--- SQL Migration Script
-CREATE TABLE roles (
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create roles table
+CREATE TABLE IF NOT EXISTS roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE permissions (
+-- Create permissions table
+CREATE TABLE IF NOT EXISTS permissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE role_permissions (
+-- Create role_permissions table (pivot table)
+CREATE TABLE IF NOT EXISTS role_permissions (
     role_id INT,
     permission_id INT,
     PRIMARY KEY (role_id, permission_id),
@@ -19,7 +30,8 @@ CREATE TABLE role_permissions (
     FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
 );
 
-CREATE TABLE user_roles (
+-- Create user_roles table (pivot table)
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INT,
     role_id INT,
     PRIMARY KEY (user_id, role_id),

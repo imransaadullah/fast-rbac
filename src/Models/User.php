@@ -85,17 +85,24 @@ class User {
             
             $stmt = $db->prepare("
                 SELECT r.* 
-                FROM {$rolesTable} r 
-                JOIN {$userRolesTable} ur ON r.id = ur.role_id 
+                FROM {$rolesTable} r
+                JOIN {$userRolesTable} ur ON r.id = ur.role_id
                 WHERE ur.user_id = :user_id
             ");
             $stmt->execute(['user_id' => $this->id]);
-            $this->roles = $stmt->fetchAll(PDO::FETCH_CLASS, Role::class);
+    
+            // Fetch data as associative arrays
+            $rolesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Manually create Role objects
+            foreach ($rolesData as $roleData) {
+                $this->roles[] = new Role($roleData['id'], $roleData['name'], $roleData['slug']);
+            }
         }
-
+    
         return $this->roles;
     }
-
+    
     public function getId() {
         return $this->id;
     }
