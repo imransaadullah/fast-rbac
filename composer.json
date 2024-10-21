@@ -13,7 +13,8 @@
     "require": {
       "php": ">=7.4",
       "predis/predis": "^1.1", 
-      "phpunit/phpunit": "^9.0"  
+      "phpunit/phpunit": "^9.0",
+      "vlucas/phpdotenv": "^5.4"
     },
     "autoload": {
       "psr-4": {

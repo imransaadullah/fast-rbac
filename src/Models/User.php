@@ -73,7 +73,7 @@ class User {
         if ($this->cacheService) {
             $this->cacheService->put($cacheKey, json_encode($permissions));
         }
-
+        
         return in_array($permissionSlug, $permissions);
     }
 

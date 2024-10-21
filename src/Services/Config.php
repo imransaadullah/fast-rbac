@@ -3,23 +3,25 @@
 namespace RBAC\Services;
 
 class Config {
-    private static $config;
-    private static $customConfigFile;
+    private static $config = null;
+    private static $configFile = __DIR__ . '/../../config/rbac.php';
 
     // Allow users to set a custom configuration file
-    public static function setCustomConfigFile($filePath) {
-        self::$customConfigFile = $filePath;
+    public static function setFile($filePath) {
+        if (file_exists($filePath)) {
+            self::$configFile = $filePath;
+        } else {
+            throw new \Exception("Configuration file {$filePath} does not exist.");
+        }
     }
 
     // Load configuration file, either custom or default
     private static function loadConfig() {
-        if (!self::$config) {
-            if (self::$customConfigFile && file_exists(self::$customConfigFile)) {
-                // Load the custom configuration file if it exists
-                self::$config = require self::$customConfigFile;
+        if (self::$config === null) {
+            if (file_exists(self::$configFile)) {
+                self::$config = require self::$configFile;
             } else {
-                // Load the default configuration
-                self::$config = require __DIR__ . '/../../config/rbac.php';
+                throw new \Exception("Default configuration file does not exist at " . self::$configFile);
             }
         }
     }
